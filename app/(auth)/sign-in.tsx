@@ -28,22 +28,37 @@ export default function SignInScreen() {
       if (createdSessionId && setActiveSession) {
         await setActiveSession({ session: createdSessionId });
         router.replace('/(tabs)/home');
+      } else {
+        // If no session was created, user might have cancelled
+        // Navigate back to sign-in to prevent unmatched route error
+        router.replace('/(auth)/sign-in');
       }
     } catch (err: any) {
       // Handle user cancellation gracefully
       const errorMessage = err?.errors?.[0]?.message || err?.message || '';
       const errorCode = err?.errors?.[0]?.code || err?.code || '';
+      const errorType = err?.errors?.[0]?.type || err?.type || '';
       
       // Check if user cancelled the OAuth flow
-      if (
+      // Clerk may throw different types of cancellation errors
+      const isCancellation = 
         errorMessage.toLowerCase().includes('cancel') ||
         errorMessage.toLowerCase().includes('cancelled') ||
         errorMessage.toLowerCase().includes('user_cancelled') ||
+        errorMessage.toLowerCase().includes('user canceled') ||
+        errorMessage.toLowerCase().includes('user_canceled') ||
         errorCode === 'user_cancelled' ||
-        errorCode === 'oauth_cancelled'
-      ) {
-        // Silently handle cancellation - don't show error message
+        errorCode === 'oauth_cancelled' ||
+        errorCode === 'user_canceled' ||
+        errorType === 'user_cancelled' ||
+        // Check for empty error (sometimes cancellation has no error message)
+        (!errorMessage && !errorCode);
+      
+      if (isCancellation) {
+        // Silently handle cancellation - navigate back to sign-in
         setError('');
+        // Use push instead of replace to ensure we're on the sign-in page
+        router.push('/(auth)/sign-in');
         return;
       }
 
@@ -54,6 +69,7 @@ export default function SignInScreen() {
         errorMessage.toLowerCase().includes('timeout')
       ) {
         setError('Network error. Please check your connection and try again.');
+        router.replace('/(auth)/sign-in');
         return;
       }
 
@@ -64,6 +80,8 @@ export default function SignInScreen() {
         setError('Failed to sign in with Google. Please try again.');
       }
       
+      // Navigate back to sign-in to prevent unmatched route error
+      router.replace('/(auth)/sign-in');
       console.error('OAuth error:', JSON.stringify(err, null, 2));
     } finally {
       setLoading(false);
