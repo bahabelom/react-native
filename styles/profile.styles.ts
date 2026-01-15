@@ -239,4 +239,72 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: COLORS.white,
   },
+  profileScrollContent: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  profileAvatarSection: {
+    alignItems: "center",
+    marginBottom: 32,
+    paddingTop: 20,
+  },
+  profileAvatarContainer: {
+    marginBottom: 16,
+  },
+  profileAvatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: COLORS.primary,
+  },
+  profileAvatarPlaceholder: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: COLORS.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 3,
+    borderColor: COLORS.primary,
+  },
+  profileAvatarText: {
+    fontSize: 36,
+    fontWeight: "700",
+    color: COLORS.background,
+  },
+  profileUserName: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: COLORS.white,
+    marginBottom: 4,
+  },
+  profileUserEmail: {
+    fontSize: 14,
+    color: COLORS.grey,
+  },
+  profileInfoSection: {
+    marginBottom: 32,
+  },
+  profileInfoItem: {
+    marginBottom: 24,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.surface,
+  },
+  profileInfoLabel: {
+    fontSize: 14,
+    color: COLORS.grey,
+    marginBottom: 8,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  profileInfoValue: {
+    fontSize: 16,
+    color: COLORS.white,
+    fontWeight: "500",
+  },
+  profileSignOutContainer: {
+    marginTop: 20,
+  },
 });

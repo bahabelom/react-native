@@ -95,22 +95,26 @@ export const styles = StyleSheet.create({
   signInContainer: {
     flex: 1,
     backgroundColor: COLORS.background,
+  },
+  signInContent: {
+    flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 40,
+    justifyContent: "center",
+    paddingVertical: 20,
   },
   signInImageContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 20,
     paddingBottom: 20,
   },
   signInImage: {
-    width: 280,
-    height: 280,
+    width: 240,
+    height: 240,
   },
   signInFormContainer: {
     flex: 1,
     justifyContent: "center",
+    maxHeight: 600,
   },
   signInTitle: {
     fontSize: 32,
