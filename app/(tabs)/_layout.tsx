@@ -1,61 +1,73 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
+import { Ionicons } from '@expo/vector-icons';
+import { COLORS } from '@/constants/theme';
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarShowLabel: false,
         headerShown: false,
+        tabBarActiveTintColor: COLORS.primary,
+        tabBarInactiveTintColor: COLORS.grey,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          backgroundColor: COLORS.background,
+          borderTopWidth: 0,
+          position: 'absolute',
+          elevation: 0,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
       }}>
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <Ionicons name="home" size={size || 24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="feed"
         options={{
-          title: 'Feed',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="square.grid.2x2.fill" color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <Ionicons name="grid" size={size || 24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="create"
         options={{
-          title: 'Create',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus.circle.fill" color={color} />,
+          tabBarIcon: ({ size }) => (
+            <Ionicons name="add-circle" size={size || 28} color={COLORS.primary} />
+          ),
         }}
       />
       <Tabs.Screen
         name="notifications"
         options={{
-          title: 'Notifications',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="bell.fill" color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <Ionicons name="heart" size={size || 24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="bookmark"
         options={{
-          title: 'Bookmarks',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="bookmark.fill" color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <Ionicons name="bookmark" size={size || 24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
+          tabBarIcon: ({ size, color }) => (
+            <Ionicons name="person-circle" size={size || 24} color={color} />
+          ),
         }}
       />
     </Tabs>
