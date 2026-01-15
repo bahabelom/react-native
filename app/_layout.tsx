@@ -1,9 +1,11 @@
-import { ClerkProvider } from '@clerk/clerk-expo';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { ConvexProvider, ConvexReactClient } from 'convex/react';
+import { ConvexReactClient } from 'convex/react';
+import { ConvexProviderWithClerk } from 'convex/react-clerk';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -16,6 +18,16 @@ export const unstable_settings = {
   anchor: '(tabs)',
 };
 
+// Inner component that has access to Clerk's useAuth hook
+function ConvexClientProvider({ children }: { children: React.ReactNode }) {
+  const auth = useAuth();
+  return (
+    <ConvexProviderWithClerk client={convex} useAuth={() => auth}>
+      {children}
+    </ConvexProviderWithClerk>
+  );
+}
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -27,8 +39,8 @@ export default function RootLayout() {
   }
 
   return (
-    <ConvexProvider client={convex}>
-      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <ConvexClientProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <Stack>
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -37,7 +49,7 @@ export default function RootLayout() {
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
-      </ClerkProvider>
-    </ConvexProvider>
+      </ConvexClientProvider>
+    </ClerkProvider>
   );
 }
