@@ -1,6 +1,5 @@
 import { styles } from '@/styles/auth.styles';
 import { useOAuth, useSignIn } from '@clerk/clerk-expo';
-import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import React from 'react';
 import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -181,15 +180,6 @@ export default function SignInScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
         <View style={styles.signInContent}>
-          {/* Authentication Image */}
-          <View style={styles.signInImageContainer}>
-            <Image
-              source={require('@/assets/images/Authentication-pana.png')}
-              style={styles.signInImage}
-              contentFit="contain"
-            />
-          </View>
-
           <View style={styles.signInFormContainer}>
             <Text style={styles.signInTitle}>Sign in</Text>
             <Text style={styles.signInSubtitle}>Welcome back! Sign in to continue</Text>

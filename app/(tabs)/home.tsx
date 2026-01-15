@@ -1,11 +1,32 @@
 import { COLORS } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
-import { styles } from "@/styles/feed.styles";
 import { useQuery, useMutation } from "convex/react";
-import { ScrollView, Text, View, TouchableOpacity, Alert, TextInput, Modal } from "react-native";
+import { ScrollView, Text, View, TouchableOpacity, Alert, TextInput, Modal, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Id } from "@/convex/_generated/dataModel";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.surface,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: COLORS.white,
+    textAlign: "center",
+  },
+});
 
 export default function HomeScreen() {
   const tasks = useQuery(api.tasks.get);
@@ -131,7 +152,10 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <ScrollView style={{ flex: 1, padding: 16 }}>
+      <ScrollView 
+        style={{ flex: 1, padding: 16 }} 
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
         {tasks === undefined ? (
           <Text style={{ color: COLORS.grey, textAlign: 'center', marginTop: 20 }}>
             Loading tasks...

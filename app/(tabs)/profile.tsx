@@ -29,7 +29,7 @@ export default function ProfileScreen() {
       </View>
       <ScrollView 
         style={{ flex: 1 }} 
-        contentContainerStyle={styles.profileScrollContent}
+        contentContainerStyle={[styles.profileScrollContent, { paddingBottom: 100 }]}
         showsVerticalScrollIndicator={false}
       >
         {/* Profile Data Image */}

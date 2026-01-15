@@ -8,7 +8,6 @@
  * @module
  */
 
-import type * as example from "../example.js";
 import type * as helpers from "../helpers.js";
 import type * as tasks from "../tasks.js";
 
@@ -19,7 +18,6 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  example: typeof example;
   helpers: typeof helpers;
   tasks: typeof tasks;
 }>;

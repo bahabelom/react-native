@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 24,
-    fontFamily: "JetBrainsMono-Medium",
-    color: COLORS.primary,
+    fontWeight: "600",
+    color: COLORS.white,
     textAlign: "center",
   },
 });

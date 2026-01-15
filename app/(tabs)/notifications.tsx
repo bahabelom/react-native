@@ -1,6 +1,29 @@
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { styles } from "@/styles/notifications.styles";
+import { COLORS } from "@/constants/theme";
+import { StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.surface,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: COLORS.white,
+    textAlign: "center",
+  },
+});
 
 export default function NotificationsScreen() {
   return (
