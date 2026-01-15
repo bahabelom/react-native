@@ -3,7 +3,7 @@ import { useOAuth, useSignIn } from '@clerk/clerk-expo';
 import { Image } from 'expo-image';
 import { Link, useRouter } from 'expo-router';
 import React from 'react';
-import { Text, TextInput, TouchableOpacity, View, KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignInScreen() {
@@ -30,8 +30,41 @@ export default function SignInScreen() {
         router.replace('/(tabs)/home');
       }
     } catch (err: any) {
-      setError(err?.errors?.[0]?.message || 'Failed to sign in with Google');
-      console.error(JSON.stringify(err, null, 2));
+      // Handle user cancellation gracefully
+      const errorMessage = err?.errors?.[0]?.message || err?.message || '';
+      const errorCode = err?.errors?.[0]?.code || err?.code || '';
+      
+      // Check if user cancelled the OAuth flow
+      if (
+        errorMessage.toLowerCase().includes('cancel') ||
+        errorMessage.toLowerCase().includes('cancelled') ||
+        errorMessage.toLowerCase().includes('user_cancelled') ||
+        errorCode === 'user_cancelled' ||
+        errorCode === 'oauth_cancelled'
+      ) {
+        // Silently handle cancellation - don't show error message
+        setError('');
+        return;
+      }
+
+      // Handle network errors
+      if (
+        errorMessage.toLowerCase().includes('network') ||
+        errorMessage.toLowerCase().includes('connection') ||
+        errorMessage.toLowerCase().includes('timeout')
+      ) {
+        setError('Network error. Please check your connection and try again.');
+        return;
+      }
+
+      // Handle other OAuth errors
+      if (errorMessage) {
+        setError(errorMessage);
+      } else {
+        setError('Failed to sign in with Google. Please try again.');
+      }
+      
+      console.error('OAuth error:', JSON.stringify(err, null, 2));
     } finally {
       setLoading(false);
     }
@@ -40,13 +73,24 @@ export default function SignInScreen() {
   // Handle the submission of the sign-in form
   const onSignInPress = async () => {
     if (!isLoaded) return;
+    
+    // Basic validation
+    if (!emailAddress.trim()) {
+      setError('Please enter your email address');
+      return;
+    }
+    if (!password.trim()) {
+      setError('Please enter your password');
+      return;
+    }
+
     setError('');
     setLoading(true);
 
     // Start the sign-in process using the email and password provided
     try {
       const signInAttempt = await signIn.create({
-        identifier: emailAddress,
+        identifier: emailAddress.trim(),
         password,
       });
 
@@ -59,13 +103,53 @@ export default function SignInScreen() {
         // If the status isn't complete, check why. User might need to
         // complete further steps.
         setError('Sign in incomplete. Please try again.');
-        console.error(JSON.stringify(signInAttempt, null, 2));
+        console.error('Sign in incomplete:', JSON.stringify(signInAttempt, null, 2));
       }
     } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      setError(err?.errors?.[0]?.message || 'Invalid email or password');
-      console.error(JSON.stringify(err, null, 2));
+      // Handle different types of errors gracefully
+      const errorMessage = err?.errors?.[0]?.message || err?.message || '';
+      const errorCode = err?.errors?.[0]?.code || err?.code || '';
+
+      // Handle network errors
+      if (
+        errorMessage.toLowerCase().includes('network') ||
+        errorMessage.toLowerCase().includes('connection') ||
+        errorMessage.toLowerCase().includes('timeout') ||
+        errorMessage.toLowerCase().includes('fetch')
+      ) {
+        setError('Network error. Please check your connection and try again.');
+        return;
+      }
+
+      // Handle invalid credentials
+      if (
+        errorMessage.toLowerCase().includes('invalid') ||
+        errorMessage.toLowerCase().includes('incorrect') ||
+        errorCode === 'form_identifier_not_found' ||
+        errorCode === 'form_password_incorrect'
+      ) {
+        setError('Invalid email or password. Please try again.');
+        return;
+      }
+
+      // Handle account locked/suspended
+      if (
+        errorMessage.toLowerCase().includes('locked') ||
+        errorMessage.toLowerCase().includes('suspended') ||
+        errorMessage.toLowerCase().includes('disabled')
+      ) {
+        setError('Your account has been locked. Please contact support.');
+        return;
+      }
+
+      // Handle other errors
+      if (errorMessage) {
+        setError(errorMessage);
+      } else {
+        setError('An error occurred. Please try again.');
+      }
+      
+      console.error('Sign in error:', JSON.stringify(err, null, 2));
     } finally {
       setLoading(false);
     }
@@ -101,7 +185,11 @@ export default function SignInScreen() {
               value={emailAddress}
               placeholder="Email"
               placeholderTextColor={styles.tagline.color}
-              onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+              onChangeText={(emailAddress) => {
+                setEmailAddress(emailAddress);
+                // Clear error when user starts typing
+                if (error) setError('');
+              }}
               keyboardType="email-address"
               editable={!loading}
             />
@@ -111,7 +199,11 @@ export default function SignInScreen() {
               placeholder="Password"
               placeholderTextColor={styles.tagline.color}
               secureTextEntry={true}
-              onChangeText={(password) => setPassword(password)}
+              onChangeText={(password) => {
+                setPassword(password);
+                // Clear error when user starts typing
+                if (error) setError('');
+              }}
               editable={!loading}
             />
             <TouchableOpacity 

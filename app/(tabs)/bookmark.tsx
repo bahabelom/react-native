@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   header: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 0.5,
@@ -18,6 +21,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "JetBrainsMono-Medium",
     color: COLORS.primary,
+    textAlign: "center",
   },
 });
 

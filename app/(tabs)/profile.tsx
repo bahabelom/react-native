@@ -32,6 +32,15 @@ export default function ProfileScreen() {
         contentContainerStyle={styles.profileScrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {/* Profile Data Image */}
+        <View style={styles.profileImageContainer}>
+          <Image
+            source={require('@/assets/images/Profile data-bro.png')}
+            style={styles.profileDataImage}
+            contentFit="contain"
+          />
+        </View>
+
         {/* Avatar Section */}
         <View style={styles.profileAvatarSection}>
           <View style={styles.profileAvatarContainer}>

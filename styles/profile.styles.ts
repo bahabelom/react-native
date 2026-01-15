@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -238,15 +238,26 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: COLORS.white,
+    textAlign: "center",
   },
   profileScrollContent: {
     padding: 20,
     paddingBottom: 40,
   },
+  profileImageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 24,
+    paddingTop: 10,
+  },
+  profileDataImage: {
+    width: 280,
+    height: 200,
+    maxWidth: "100%",
+  },
   profileAvatarSection: {
     alignItems: "center",
     marginBottom: 32,
-    paddingTop: 20,
   },
   profileAvatarContainer: {
     marginBottom: 16,
