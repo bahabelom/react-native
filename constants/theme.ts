@@ -51,3 +51,12 @@ export const Fonts = Platform.select({
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
   },
 });
+
+// COLORS constant for style files
+export const COLORS = {
+  background: '#000000',
+  primary: '#4ADE80', // Green primary color
+  grey: '#9BA1A6',
+  white: '#FFFFFF',
+  surface: '#1C1C1E',
+};
